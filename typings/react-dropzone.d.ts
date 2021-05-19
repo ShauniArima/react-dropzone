@@ -14,7 +14,7 @@ export interface FileError {
 }
 
 export interface FileRejection {
-  file: File;
+  file: File | FileWithPath;
   errors: FileError[];
 }
 
@@ -32,7 +32,7 @@ export type DropzoneOptions = Pick<React.HTMLProps<HTMLElement>, PropTypes> & {
   onDrop?: <T extends File>(acceptedFiles: T[], fileRejections: FileRejection[], event: DropEvent) => void;
   onDropAccepted?: <T extends File>(files: T[], event: DropEvent) => void;
   onDropRejected?: (fileRejections: FileRejection[], event: DropEvent) => void;
-  getFilesFromEvent?: (event: DropEvent) => Promise<Array<File | DataTransferItem>>;
+  getFilesFromEvent?: (event: DropEvent) => Promise<Array<File | FileWithPath | DataTransferItem>>;
   onFileDialogCancel?: () => void;
   validator?: <T extends File>(file: T) => FileError | FileError[] | null;
 };
@@ -46,7 +46,7 @@ export type DropzoneState = DropzoneRef & {
   isDragReject: boolean;
   isFileDialogActive: boolean;
   draggedFiles: File[];
-  acceptedFiles: File[];
+  acceptedFiles: Array<File | FileWithPath>;
   fileRejections: FileRejection[];
   rootRef: React.RefObject<HTMLElement>;
   inputRef: React.RefObject<HTMLInputElement>;
